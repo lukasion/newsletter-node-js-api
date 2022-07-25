@@ -1,18 +1,25 @@
 var router = require('express').Router();
+const { models } = require('../../models');
+const { getIdParam } = require('../../helpers');
+
+async function getByLoginPassword(login, password) {
+	const user = await models.users.findOne({
+        where: {
+            login: login,
+            password: password
+        }
+    });
+
+	return user;
+};
 
 router.post('/', (req, res) => {
     if (req.query && req.body.login !== undefined && req.body.password !== undefined) {
-        con.query(`SELECT * FROM users WHERE login = '${req.body.login}' AND password = '${req.body.password}'`, function (err, result) {
-            if (err) throw err;
-
-            if (result && result.length > 0) {
-                res.json({
-                    result: result[0]
-                });
+        getByLoginPassword(req.body.login, req.body.password).then((result) => {
+            if (result) {
+                res.json(result);
             } else {
-                res.json({
-                    result: false
-                });
+                res.json({result: null});
             }
         });
     } else {

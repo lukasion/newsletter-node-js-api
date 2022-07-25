@@ -1,19 +1,6 @@
 const express = require('express')
 const app = express()
 const port = 3001
-const connection = require('./config/connection.json');
-const Sequelize = require('sequelize');
-const { DataTypes } = Sequelize;
-
-const sequelize = new Sequelize({
-  database: connection.database,
-  username: connection.user,
-  host: connection.host,
-  port: connection.port,
-  password: connection.password,
-  dialect: 'mysql',
-  operatorsAliases: false
-});
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
